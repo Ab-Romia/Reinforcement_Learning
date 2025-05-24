@@ -18,7 +18,7 @@ class GridMDP:
         self.states = [(i, j) for i in range(3) for j in range(3)]
 
         # Define terminal states and their rewards
-        self.terminals = {(0, 0): self.r_value, (0, 2): 10.0}
+        self.terminals = { (0,0): self.r_value, (0, 2): 10.0}
 
         # Actions: 0=Up, 1=Down, 2=Left, 3=Right
         self.actions = [0, 1, 2, 3]
@@ -84,7 +84,7 @@ class GridMDP:
     def value_iteration(self, threshold=1e-6, max_iter=1000):
         """Solve MDP using Value Iteration"""
         # Initialize values
-        V = {s: 0.0 for s in self.states}
+        V = {s: self.get_reward(s) for s in self.states}
 
         # Set terminal state values
         for state, reward in self.terminals.items():
@@ -148,7 +148,7 @@ class GridMDP:
 
     def policy_evaluation(self, policy, threshold=1e-6, max_iter=1000):
         """Evaluate a given policy"""
-        V = {s: 0.0 for s in self.states}
+        V = {s: self.get_reward(s) for s in self.states}
 
         # Set terminal values
         for state, reward in self.terminals.items():
