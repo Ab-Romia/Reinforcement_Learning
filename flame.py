@@ -8,7 +8,7 @@ class GridMDP:
     Simple 3x3 Grid World MDP solver using Value Iteration and Policy Iteration.
     """
 
-    def __init__(self, r_value, gamma=0.99):
+    def __init__(self, r_value, gamma=0.99, is_term=False):
         self.rows = 3
         self.cols = 3
         self.gamma = gamma  # discount factor
@@ -18,7 +18,7 @@ class GridMDP:
         self.states = [(i, j) for i in range(3) for j in range(3)]
 
         # Define terminal states and their rewards
-        self.terminals = { (0,0): self.r_value, (0, 2): 10.0}
+        self.terminals = {  (0, 2): 10.0} if is_term is False else {(0,0): r_value, (0, 2): 10.0}
 
         # Actions: 0=Up, 1=Down, 2=Left, 3=Right
         self.actions = [0, 1, 2, 3]
@@ -34,6 +34,8 @@ class GridMDP:
         """Get immediate reward for being in a state"""
         if state in self.terminals:
             return self.terminals[state]
+        if state == (0, 0):
+            return self.r_value
         return -1.0
 
     def _build_transitions(self):
@@ -81,7 +83,7 @@ class GridMDP:
 
         return transitions
 
-    def value_iteration(self, threshold=1e-6, max_iter=1000):
+    def value_iteration(self, threshold=1e-9, max_iter=10000):
         """Solve MDP using Value Iteration"""
         # Initialize values
         V = {s: self.get_reward(s) for s in self.states}
@@ -146,7 +148,7 @@ class GridMDP:
 
         return policy
 
-    def policy_evaluation(self, policy, threshold=1e-6, max_iter=1000):
+    def policy_evaluation(self, policy, threshold=1e-9, max_iter=10000):
         """Evaluate a given policy"""
         V = {s: self.get_reward(s) for s in self.states}
 
@@ -189,7 +191,7 @@ class GridMDP:
 
         return V
 
-    def policy_iteration(self, max_iter=100):
+    def policy_iteration(self, max_iter=10000):
         """Solve MDP using Policy Iteration"""
         # Initialize random policy
         policy = {}
@@ -313,7 +315,7 @@ class GridVisualizer:
         return fig
 
 
-def run_experiment():
+def run_experiment(is_term = False):
     """Run the complete experiment for different r values"""
     r_values = [100, 3, 0, -3]
     visualizer = GridVisualizer()
@@ -331,7 +333,7 @@ def run_experiment():
         print(f"\n--- r = {r} ---")
 
         # Create MDP
-        mdp = GridMDP(r)
+        mdp = GridMDP(r,is_term=is_term)
 
         # Value Iteration
         print("Running Value Iteration...")
@@ -378,3 +380,4 @@ def run_experiment():
 
 if __name__ == "__main__":
     run_experiment()
+    run_experiment(is_term=True)

@@ -114,6 +114,8 @@ for r in reward_values:
 ## Key Experimental Results
 
 ### Convergence Performance
+
+#### Terminal State (0,0)
 | r Value | Policies Match | VI Iterations | PI Iterations |
 |---------|----------------|---------------|---------------|
 | 100     | ✓              | 31            | 4             |
@@ -121,7 +123,17 @@ for r in reward_values:
 | 0       | ✓              | 26            | 3             |
 | -3      | ✓              | 26            | 3             |
 
+#### Non-Terminal State (0,0)
+| r Value | Policies Match | VI Iterations | PI Iterations |
+|---------|----------------|---------------|---------------|
+| 100     | ✓              | 2508          | 4             |
+| 3       | ✓              | 2153          | 4             |
+| 0       | ✓              | 36            | 4             |
+| -3      | ✓              | 36            | 3             |
+
 ### Policy Patterns
+
+#### Terminal State (0,0) Cases
 
 **r = 100 (High Reward):**
 ```
@@ -139,37 +151,99 @@ Mixed strategy: some states move toward (0,0), others toward (0,2)
 ```
 Uniform strategy: all states direct toward (0,2) with +10 reward
 
+#### Non-Terminal State (0,0) Cases
+
+**r = 100 and r = 3 (Positive Rewards):**
+```
+↑  ←  *
+↑  ←  ↓
+↑  ←  ←
+```
+Strategy: Direct toward (0,0) first to collect reward, then proceed to terminal state
+
+**r = 0 (Zero Reward):**
+```
+→  →  *
+↑  ↑  ↑
+↑  ↑  ↑
+```
+Strategy: Bypass (0,0) and move efficiently toward (0,2)
+
+**r = -3 (Negative Reward):**
+```
+→  →  *
+→  →  ↑
+→  →  ↑
+```
+Strategy: Actively avoid (0,0) while navigating to (0,2)
+
 ## Key Findings
 
 ### Critical Insights
-1. **Threshold Effect**: A critical reward threshold exists between r=100 and r=3 where optimal policies completely change
-2. **Policy Robustness**: Identical policies for r=3, 0, -3 demonstrate robust decision boundaries
-3. **Algorithm Efficiency**: Policy Iteration consistently converged 6-8x faster than Value Iteration
-4. **Stochastic Impact**: 80%/10%/10% transitions significantly influence policy decisions
+
+#### Reward Threshold Effects
+1. **Terminal State Threshold**: Critical threshold between r=100 and r=3 where optimal policies completely change
+2. **Non-Terminal Binary Threshold**: Sharp decision boundary between positive rewards (r=100, r=3) and non-positive rewards (r=0, r=-3)
+3. **Positive Reward Equivalence**: In non-terminal cases, r=100 and r=3 produce identical policies, showing magnitude insensitivity within positive rewards
+4. **Zero vs Negative Distinction**: r=0 and r=-3 create different avoidance patterns in non-terminal cases
+
+#### Algorithm Performance
+1. **Policy Iteration Dominance**: PI consistently converged in 3-4 iterations across all scenarios
+2. **Value Iteration Variability**: VI performance highly dependent on reward structure and state type
+   - Terminal cases: 26-31 iterations
+   - Non-terminal positive rewards: 2000+ iterations  
+   - Non-terminal zero/negative rewards: 36 iterations
+3. **Perfect Agreement**: Both algorithms produced identical optimal policies in all 8 test cases
+
+#### State Type Impact
+1. **Terminal vs Non-Terminal Complexity**: Non-terminal states enable multi-step reward collection strategies
+2. **Convergence Difficulty**: Non-terminal positive reward cases required dramatically more VI iterations
+3. **Policy Sophistication**: Non-terminal cases show more nuanced decision-making patterns
 
 ### Practical Implications
-- **Reward Design**: Small changes in reward ratios can cause dramatic policy shifts
-- **Algorithm Choice**: Policy Iteration preferred for smaller state spaces due to faster convergence
-- **Uncertainty Handling**: Stochastic transitions effectively reduce attractiveness of distant rewards
+
+#### Reward Design Guidelines
+- **Reward Sign Criticality**: The sign of rewards (positive vs zero vs negative) is more important than magnitude
+- **Threshold Awareness**: Small reward changes can cause complete policy restructuring
+- **Multi-Step Considerations**: Non-terminal reward states enable complex sequential strategies
+
+#### Algorithm Selection
+- **Policy Iteration Preferred**: Consistently superior convergence for discrete MDPs of this scale
+- **Computational Predictability**: PI offers reliable iteration counts regardless of reward structure
+- **Implementation Validation**: Running both algorithms provides excellent correctness verification
+
+#### Environment Design
+- **Stochastic Impact**: 80%/10%/10% transitions significantly reduce attractiveness of distant rewards
+- **State Type Strategy**: Terminal vs non-terminal reward placement dramatically affects optimal behavior
+- **Uncertainty Handling**: Stochastic environments favor simpler, more direct policies
 
 ## Visualization Features
 
-The implementation includes comprehensive visualization tools:
+The implementation includes comprehensive visualization tools for both terminal and non-terminal cases:
 
 ### Policy Visualization
-- Arrow-based policy representation
-- Color-coded terminal states
-- Clear grid layout with state labels
+- Arrow-based policy representation for all 9 states
+- Color-coded terminal states (red) and reward states (green/yellow)
+- Clear grid layout with coordinate labels
+- Distinct visual patterns for different reward scenarios
 
 ### Value Function Visualization
-- Heatmap representation of state values
-- Numerical value display
-- Color gradient indicating value magnitude
+- Heatmap representation showing value propagation
+- Numerical value display for precise analysis
+- Color gradients indicating relative value magnitudes
+- Comparison views for terminal vs non-terminal cases
 
 ### Convergence Analysis
-- Iteration count comparison
-- Convergence rate visualization
-- Policy difference analysis
+- Side-by-side iteration count comparison (VI vs PI)
+- Convergence rate visualization across different reward values
+- Policy difference analysis highlighting threshold effects
+- Performance metrics for algorithm selection guidance
+
+### Comparative Analysis Tools
+- Terminal vs non-terminal result comparison
+- Reward sensitivity analysis visualization
+- Algorithm efficiency metrics
+- Policy evolution tracking across iterations
 
 ## Code Structure
 
