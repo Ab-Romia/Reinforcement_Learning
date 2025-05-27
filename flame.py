@@ -103,10 +103,9 @@ class GridMDP:
                 # Compute Q-values for all actions
                 q_values = []
                 for action in self.actions:
-                    q_val = 0.0
+                    q_val = self.get_reward(state)
                     for next_state, prob in self.transitions[state][action].items():
-                        reward = self.get_reward(state)
-                        q_val += prob * (reward + self.gamma * V[next_state])
+                        q_val += prob * (self.gamma * V[next_state])
                     q_values.append(q_val)
 
                 # Take maximum Q-value
@@ -219,10 +218,9 @@ class GridMDP:
                 best_value = float('-inf')
 
                 for action in self.actions:
-                    q_val = 0.0
+                    q_val = self.get_reward(state)
                     for next_state, prob in self.transitions[state][action].items():
-                        reward = self.get_reward(state)
-                        q_val += prob * (reward + self.gamma * V[next_state])
+                        q_val += prob * ( self.gamma * V[next_state])
 
                     if q_val > best_value:
                         best_value = q_val
