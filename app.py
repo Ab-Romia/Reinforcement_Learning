@@ -488,23 +488,19 @@ with gr.Blocks(css=css, theme=gr.themes.Soft(), title="Grid World RL Game") as d
                 with gr.Tab("🎓 Training Results"):
                     training_status = gr.Textbox(
                         label="Training Status",
-                        lines=2,
-                        interactive=False
+                        lines=2
                     )
 
                     with gr.Row():
                         policy_viz = gr.Image(
-                            label="Learned Policy & Value Function",
-                            type="pil"
+                            label="Learned Policy & Value Function"
                         )
                         path_viz = gr.Image(
-                            label="Optimal Path Visualization",
-                            type="pil"
+                            label="Optimal Path Visualization"
                         )
 
                     convergence_plot = gr.Image(
-                        label="Convergence Analysis",
-                        type="pil"
+                        label="Convergence Analysis"
                     )
 
                     stats_display = gr.Markdown(label="Statistics")
@@ -516,17 +512,17 @@ with gr.Blocks(css=css, theme=gr.themes.Soft(), title="Grid World RL Game") as d
                         info="Enable random movement (more realistic)"
                     )
 
-                    sim_image = gr.Image(label="Simulation Result", type="pil")
+                    sim_image = gr.Image(label="Simulation Result")
                     sim_info = gr.Markdown()
 
                 with gr.Tab("⚖️ Algorithm Comparison"):
                     gr.Markdown("Compare Value Iteration vs Policy Iteration side-by-side")
 
                     with gr.Row():
-                        vi_viz = gr.Image(label="Value Iteration", type="pil")
-                        pi_viz = gr.Image(label="Policy Iteration", type="pil")
+                        vi_viz = gr.Image(label="Value Iteration")
+                        pi_viz = gr.Image(label="Policy Iteration")
 
-                    comparison_plot = gr.Image(label="Performance Comparison", type="pil")
+                    comparison_plot = gr.Image(label="Performance Comparison")
                     comparison_text = gr.Markdown()
 
     # Connect buttons to functions
