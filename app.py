@@ -415,7 +415,7 @@ css = """
 """
 
 # Create Gradio interface
-with gr.Blocks(css=css, theme=gr.themes.Soft(), title="Grid World RL Game") as demo:
+with gr.Blocks(css=css, title="Grid World RL Game") as demo:
 
     gr.HTML("""
     <div class="header">
@@ -503,7 +503,7 @@ with gr.Blocks(css=css, theme=gr.themes.Soft(), title="Grid World RL Game") as d
                         label="Convergence Analysis"
                     )
 
-                    stats_display = gr.Markdown(label="Statistics")
+                    stats_display = gr.Markdown()
 
                 with gr.Tab("🎮 Live Simulation"):
                     use_stochastic = gr.Checkbox(
@@ -552,8 +552,7 @@ with gr.Blocks(css=css, theme=gr.themes.Soft(), title="Grid World RL Game") as d
             [4, 50, 0.99, "Value Iteration"],
             [6, 0, 0.85, "Policy Iteration"],
         ],
-        inputs=[grid_size, reward_value, discount_factor, algorithm],
-        label="💡 Try These Configurations"
+        inputs=[grid_size, reward_value, discount_factor, algorithm]
     )
 
     gr.HTML("""
