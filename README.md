@@ -1,3 +1,14 @@
+---
+title: Grid World RL Game
+emoji: 🎮
+colorFrom: blue
+colorTo: purple
+sdk: gradio
+sdk_version: "4.0.0"
+app_file: app.py
+pinned: false
+---
+
 # 🎮 Grid World RL Game
 
 An interactive reinforcement learning game where you can watch an AI agent learn to navigate a grid world in real-time! Built with Gradio and deployable on Hugging Face Spaces.
